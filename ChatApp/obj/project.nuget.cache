@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "anCME30a37l/QGPeRIWWWJBik4VTzq1LU3kSeAKNndCFrZGAj8MEVamjGqbR1V0DyYQVcbC4JhkTtGsPvPp/1w==",
+  "dgSpecHash": "1MgHh+TkQU+cuQRoLnGoTF4i0jFIUuFnmQb1/OBckxsTChvyxbjgKiZmH6Wdbj0D8lle7jjEM5cXKzdBPGuKTw==",
   "success": true,
-  "projectFilePath": "c:\\Users\\Ivan\\labs\\c#\\CSharp-ChatBot\\ChatApp\\ChatApp.csproj",
+  "projectFilePath": "C:\\Users\\Ivan\\labs\\c#\\CSharp-ChatBot\\ChatApp\\ChatApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Ivan\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\Ivan\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",

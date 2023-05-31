@@ -35,7 +35,7 @@ namespace ChatApp
         static async Task<string> ChatWithGpt3(string userMessage)
         {
             var openAiUrl = "https://api.openai.com/v1/chat/completions";
-            var openAiApiKey = "<tu_clave_de_API>";
+            var openAiApiKey = Environment.GetEnvironmentVariable("OPENAI_KEY");
 
             var requestBody = new
             {
@@ -60,10 +60,35 @@ namespace ChatApp
 
         static string ParseGpt3Response(string responseContent)
         {
-            dynamic responseObject = JsonConvert.DeserializeObject(responseContent);
-            string gpt3Response = responseObject.choices[0]?.message?.content;
+            var response = JsonConvert.DeserializeObject<OpenAiResponse>(responseContent);
+            string gpt3Response = null;
+
+            if (response.choices != null && response.choices.Length > 0)
+            {
+                var firstChoice = response.choices[0];
+
+                if (firstChoice.message != null)
+                {
+                    gpt3Response = firstChoice.message.content;
+                }
+            }
 
             return gpt3Response ?? "No response";
         }
+    }
+
+    public class OpenAiResponse
+    {
+        public OpenAiChoice[] choices { get; set; }
+    }
+
+    public class OpenAiChoice
+    {
+        public OpenAiMessage message { get; set; }
+    }
+
+    public class OpenAiMessage
+    {
+        public string content { get; set; }
     }
 }
