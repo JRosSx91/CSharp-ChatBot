@@ -61,7 +61,7 @@ namespace ChatApp
         static string ParseGpt3Response(string responseContent)
         {
             var response = JsonConvert.DeserializeObject<OpenAiResponse>(responseContent);
-            string gpt3Response = null;
+            string? gpt3Response = null;
 
             if (response.choices != null && response.choices.Length > 0)
             {
@@ -79,16 +79,16 @@ namespace ChatApp
 
     public class OpenAiResponse
     {
-        public OpenAiChoice[] choices { get; set; }
+        public OpenAiChoice[]? choices { get; set; }
     }
 
     public class OpenAiChoice
     {
-        public OpenAiMessage message { get; set; }
+        public OpenAiMessage? message { get; set; }
     }
 
     public class OpenAiMessage
     {
-        public string content { get; set; }
+        public string? content { get; set; }
     }
 }
