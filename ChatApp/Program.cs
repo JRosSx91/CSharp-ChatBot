@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace ChatApp
 {
@@ -36,9 +37,16 @@ namespace ChatApp
             var openAiUrl = "https://api.openai.com/v1/chat/completions";
             var openAiApiKey = "<tu_clave_de_API>";
 
-            var requestBody = $"{{\"model\":\"gpt-3.5-turbo\",\"messages\":[{{\"role\":\"user\",\"content\":\"{userMessage}\"}}]}}";
+            var requestBody = new
+            {
+                model = "gpt-3.5-turbo",
+                messages = new[]
+                {
+                    new { role = "user", content = userMessage }
+                }
+            };
 
-            var requestContent = new StringContent(requestBody, Encoding.UTF8, "application/json");
+            var requestContent = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
 
             client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {openAiApiKey}");
@@ -52,14 +60,10 @@ namespace ChatApp
 
         static string ParseGpt3Response(string responseContent)
         {
-            // Implementa el código para extraer la respuesta de la API de OpenAI según el formato de respuesta específico que recibas
-            // Puedes usar la biblioteca Newtonsoft.Json para analizar el JSON de la respuesta si es necesario.
-            // Aquí hay un ejemplo básico:
+            dynamic responseObject = JsonConvert.DeserializeObject(responseContent);
+            string gpt3Response = responseObject.choices[0]?.message?.content;
 
-            dynamic responseObject = Newtonsoft.Json.JsonConvert.DeserializeObject(responseContent);
-            string gpt3Response = responseObject.choices[0].message.content;
-
-            return gpt3Response;
+            return gpt3Response ?? "No response";
         }
     }
 }
