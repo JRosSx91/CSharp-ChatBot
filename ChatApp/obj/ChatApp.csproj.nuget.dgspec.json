@@ -47,6 +47,10 @@
             "OpenAI": {
               "target": "Package",
               "version": "[1.1.0, )"
+            },
+            "RestSharp": {
+              "target": "Package",
+              "version": "[110.2.0, )"
             }
           },
           "imports": [

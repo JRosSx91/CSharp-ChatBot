@@ -1,12 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "1MgHh+TkQU+cuQRoLnGoTF4i0jFIUuFnmQb1/OBckxsTChvyxbjgKiZmH6Wdbj0D8lle7jjEM5cXKzdBPGuKTw==",
+  "dgSpecHash": "+XRSgMzMaRgBFPCNOeGlW9uqVWmhYukEAwTXzaOcJFZhvSmGo+BIpFYdRf8rwQFr6m7Ff4s9CbqLVae5i5OVzQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Ivan\\labs\\c#\\CSharp-ChatBot\\ChatApp\\ChatApp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Ivan\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\Ivan\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512",
-    "C:\\Users\\Ivan\\.nuget\\packages\\openai\\1.1.0\\openai.1.1.0.nupkg.sha512"
+    "C:\\Users\\Ivan\\.nuget\\packages\\openai\\1.1.0\\openai.1.1.0.nupkg.sha512",
+    "C:\\Users\\Ivan\\.nuget\\packages\\restsharp\\110.2.0\\restsharp.110.2.0.nupkg.sha512",
+    "C:\\Users\\Ivan\\.nuget\\packages\\system.text.encodings.web\\7.0.0\\system.text.encodings.web.7.0.0.nupkg.sha512",
+    "C:\\Users\\Ivan\\.nuget\\packages\\system.text.json\\7.0.2\\system.text.json.7.0.2.nupkg.sha512"
   ],
   "logs": []
 }

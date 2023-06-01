@@ -1,94 +1,74 @@
 ﻿using System;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.IO;
 using Newtonsoft.Json;
+using RestSharp;
 
-namespace ChatApp
+namespace OpenAIChat
 {
     class Program
     {
-        private static readonly HttpClient client = new HttpClient();
-
-        static async Task Main(string[] args)
+        class Message
         {
+            public string role { get; set; }
+            public string content { get; set; }
+        }
+
+        class ChatCompletion
+        {
+            public string model { get; set; }
+            public List<Message> messages { get; set; }
+        }
+
+        static void Main(string[] args)
+        {
+            var apiKey = Environment.GetEnvironmentVariable("OPENAI_KEY");
+
+            if (apiKey == null)
+            {
+                Console.WriteLine("OPENAI_KEY must be set");
+                return;
+            }
+
+            var client = new RestClient("https://api.openai.com/v1/chat/completions");
+            var request = new RestRequest(Method.Post);
+
+            request.AddHeader("Authorization", $"Bearer {apiKey}");
+            request.AddHeader("Content-Type", "application/json");
+
             while (true)
             {
                 Console.Write("Enter your message (type 'exit' to quit): ");
                 var userMessage = Console.ReadLine();
 
-                if (userMessage is null)
+                if (userMessage == "exit")
                 {
-                    Console.WriteLine("Invalid input. Please try again.");
-                    continue;
-                }
-
-                if (userMessage.Trim().ToLower() == "exit")
                     break;
+                }
 
-                var response = await ChatWithGpt3(userMessage);
+                var chat = new ChatCompletion
+                {
+                    model = "gpt-3.5-turbo",
+                    messages = new List<Message>
+                    {
+                        new Message
+                        {
+                            role = "user",
+                            content = userMessage
+                        }
+                    }
+                };
 
-                Console.WriteLine("GPT-3 Response: " + response);
+                var jsonChat = JsonConvert.SerializeObject(chat);
+                request.AddParameter("application/json", jsonChat, ParameterType.RequestBody);
+
+                var response = client.Execute(request);
+                var responseText = JsonConvert.DeserializeObject<dynamic>(response.Content);
+
+                // Accessing the generated text
+                string text = responseText.choices[0].message.content;
+                Console.WriteLine($"GPT-3 Response: {text}");
             }
         }
-
-        static async Task<string> ChatWithGpt3(string userMessage)
-        {
-            var openAiUrl = "https://api.openai.com/v1/chat/completions";
-            var openAiApiKey = Environment.GetEnvironmentVariable("OPENAI_KEY");
-
-            var requestBody = new
-            {
-                model = "gpt-3.5-turbo",
-                messages = new[]
-                {
-                    new { role = "user", content = userMessage }
-                }
-            };
-
-            var requestContent = new StringContent(JsonConvert.SerializeObject(requestBody), Encoding.UTF8, "application/json");
-
-            client.DefaultRequestHeaders.Clear();
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {openAiApiKey}");
-
-            var response = await client.PostAsync(openAiUrl, requestContent);
-
-            var responseContent = await response.Content.ReadAsStringAsync();
-
-            return ParseGpt3Response(responseContent);
-        }
-
-        static string ParseGpt3Response(string responseContent)
-        {
-            var response = JsonConvert.DeserializeObject<OpenAiResponse>(responseContent);
-            string? gpt3Response = null;
-
-            if (response.choices != null && response.choices.Length > 0)
-            {
-                var firstChoice = response.choices[0];
-
-                if (firstChoice.message != null)
-                {
-                    gpt3Response = firstChoice.message.content;
-                }
-            }
-
-            return gpt3Response ?? "No response";
-        }
-    }
-
-    public class OpenAiResponse
-    {
-        public OpenAiChoice[]? choices { get; set; }
-    }
-
-    public class OpenAiChoice
-    {
-        public OpenAiMessage? message { get; set; }
-    }
-
-    public class OpenAiMessage
-    {
-        public string? content { get; set; }
     }
 }
